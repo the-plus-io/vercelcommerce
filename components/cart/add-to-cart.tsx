@@ -31,7 +31,7 @@ function SubmitButton({
   if (!selectedVariantId) {
     return (
       <button
-        aria-label="Bitte wöhle eine Option"
+        aria-label="Please select an option"
         disabled
         className={clsx(buttonClasses, disabledClasses)}
       >
