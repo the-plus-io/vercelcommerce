@@ -32,6 +32,8 @@ export function SolarPlanningForm() {
   const mapRef = useRef<HTMLDivElement>(null)
   const autocompleteInputRef = useRef<HTMLInputElement>(null)
   const [isGoogleLoaded, setIsGoogleLoaded] = useState(false)
+  const [isAddressValid, setIsAddressValid] = useState(true)
+  const [errorMessage, setErrorMessage] = useState("")
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -60,9 +62,19 @@ export function SolarPlanningForm() {
   }, [isGoogleLoaded, form, step])
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    setAddress(values.address)
-    setStep(2)
-    setMap(null) // Reset the map when submitting a new address
+    const geocoder = new window.google.maps.Geocoder()
+    geocoder.geocode({ address: values.address }, (results, status) => {
+      if (status === "OK" && results && results[0]) {
+        setAddress(values.address)
+        setStep(2)
+        setMap(null)
+        setIsAddressValid(true)
+        setErrorMessage("")
+      } else {
+        setIsAddressValid(false)
+        setErrorMessage("Bitte geben Sie eine gültige Adresse ein.")
+      }
+    })
   }
 
   useEffect(() => {
@@ -132,12 +144,15 @@ export function SolarPlanningForm() {
                             placeholder="Geben Sie Ihre Adresse ein" 
                             {...field} 
                             ref={autocompleteInputRef}
-                            className="h-12 text-lg"
+                            className={`h-12 text-lg ${!isAddressValid ? 'border-red-500' : ''}`}
                           />
                         </FormControl>
                         <FormDescription className="text-base mt-2">
                           Bitte geben Sie die vollständige Adresse ein.
                         </FormDescription>
+                        {errorMessage && (
+                          <p className="text-red-500 mt-2">{errorMessage}</p>
+                        )}
                         <FormMessage />
                       </FormItem>
                     )}
