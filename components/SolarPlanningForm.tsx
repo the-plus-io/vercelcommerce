@@ -90,7 +90,7 @@ export function SolarPlanningForm() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     if (!address) {
-      setAddressError("Bitte geben Sie Ihre Adresse ein.")
+      setAddressError("Bitte geben Sie eine gültige Adresse ein.")
       return
     }
     setStep(2)
