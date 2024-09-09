@@ -40,7 +40,7 @@ export function SolarPlanningForm() {
   })
 
   useEffect(() => {
-    if (isGoogleLoaded && autocompleteInputRef.current) {
+    if (isGoogleLoaded && autocompleteInputRef.current && step === 1) {
       const autocomplete = new window.google.maps.places.Autocomplete(autocompleteInputRef.current, {
         types: ['address'],
         componentRestrictions: { country: "de" },
@@ -54,11 +54,12 @@ export function SolarPlanningForm() {
         }
       })
     }
-  }, [isGoogleLoaded, form])
+  }, [isGoogleLoaded, form, step])
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     setAddress(values.address)
     setStep(2)
+    setMap(null) // Reset the map when submitting a new address
   }
 
   useEffect(() => {
@@ -66,12 +67,12 @@ export function SolarPlanningForm() {
       const geocoder = new window.google.maps.Geocoder()
       geocoder.geocode({ address: address }, (results, status) => {
         if (status === "OK" && results && results[0]) {
-          const map = new window.google.maps.Map(mapRef.current!, {
+          const newMap = new window.google.maps.Map(mapRef.current!, {
             center: results[0].geometry.location,
             zoom: 20,
             mapTypeId: "satellite"
           })
-          setMap(map)
+          setMap(newMap)
         }
       })
     }
@@ -127,7 +128,11 @@ export function SolarPlanningForm() {
               <div ref={mapRef} className="h-[200px] w-full"></div>
             </CardContent>
             <CardFooter className="flex justify-between">
-              <Button variant="outline" onClick={() => setStep(1)}>Zurück</Button>
+              <Button variant="outline" onClick={() => {
+                setStep(1);
+                form.reset(); // Reset the form when going back
+                setMap(null); // Reset the map when going back
+              }}>Zurück</Button>
               <Button onClick={() => console.log("Weiter zum nächsten Schritt")}>Weiter</Button>
             </CardFooter>
           </>
