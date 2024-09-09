@@ -1,6 +1,4 @@
 import { SolarPlanningForm } from "@/components/SolarPlanningForm";
-import { Carousel } from 'components/carousel';
-import { ThreeItemGrid } from 'components/grid/three-items';
 import Footer from 'components/layout/footer';
 
 export const metadata = {
@@ -13,11 +11,9 @@ export const metadata = {
 export default function HomePage() {
   return (
     <>
-      <ThreeItemGrid />
       <div className="flex justify-center items-center my-8">
         <SolarPlanningForm />
       </div>
-      <Carousel />
       <Footer />
     </>
   );
