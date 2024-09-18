@@ -8,7 +8,7 @@ export function WelcomeToast() {
     // ignore if screen height is too small
     if (window.innerHeight < 650) return;
     if (!document.cookie.includes('welcome-toast=2')) {
-      toast('☀️ Willkommen bei unserer Solarplanung!', {
+      toast('🛍️ Welcome to Next.js Commerce!', {
         id: 'welcome-toast',
         duration: Infinity,
         onDismiss: () => {
@@ -16,13 +16,13 @@ export function WelcomeToast() {
         },
         description: (
           <>
-            Entdecken Sie die Vorteile der Solarenergie für Ihr Zuhause. Unser Team hilft Ihnen bei der optimalen Planung Ihrer Solaranlage.{' '}
+            This is a high-performance, SSR storefront powered by Shopify, Next.js, and Vercel.{' '}
             <a
-              href="#"
+              href="https://vercel.com/templates/next.js/nextjs-commerce"
               className="text-blue-600 hover:underline"
               target="_blank"
             >
-              Jetzt Beratung anfordern
+              Deploy your own
             </a>
             .
           </>
