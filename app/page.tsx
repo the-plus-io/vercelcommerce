@@ -1,4 +1,4 @@
-import { SolarPlanningForm } from "@/components/SolarPlanningForm";
+import SolarPlanningForm from "@/components/SolarPlanningForm";
 import Footer from 'components/layout/footer';
 
 export const metadata = {
